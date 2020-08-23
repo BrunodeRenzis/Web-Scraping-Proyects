@@ -5,18 +5,16 @@ headers = {
 }
 url = "https://stackoverflow.com/questions"
 
-respuesta = requests.get(url, headers=headers)
+response = requests.get(url, headers=headers)
 
-soup = BeautifulSoup(respuesta.text)
+soup = BeautifulSoup(response.text, features='lxml')
 
-contenedorPreguntas = soup.find('div', id="questions")
-listaPreguntas = contenedorPreguntas.find_all('div', class_="question-summary")
+questionsContainer = soup.find('div', id="questions")
+questionsList = questionsContainer.find_all('div', class_="question-summary")
 
-for pregunta in listaPreguntas:
-    requestText=pregunta.find('h3').text
-    questionDesc = pregunta.find(class_='excerpt').text
+for question in questionsList:
+    requestText = question.find('h3').text
+    questionDesc = question.find(class_='excerpt').text
     questionDesc = questionDesc.replace('\n', '').strip()
     print(requestText)
     print(questionDesc)
-
-    print()
